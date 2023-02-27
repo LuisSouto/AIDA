@@ -69,28 +69,21 @@ int main(int argc, char** argv){
 //		Xnom[nFnom-1+i*nFnom] = Xnom_temp;
 //	}
 	
-	omp_set_num_threads(4);
+	omp_set_num_threads(1);
 	string lnorm         = "1";                            // distance norm
-	string version[2]    = {"alpha1_","alpharandom_"};
+	string version[2]    = {"alpha1","alpharandom"};
 	string score_type[2] = {"expectation","variance"};
 	string dist_type     = "manhattan";
+  string file_num      = (argc>1)?string("_")+argv[1]:"";
 	int dmin = (nFnum>5)?nFnum/2:nFnum;  // Dimensions to use in feature bagging.
 	int dmax = (nFnum>5)?nFnum-1:nFnum;
-	
-	string file_number;
-	if(argc>1){
-		file_number = argv[1];
-	}
-	else{
-	  file_number = "1";
-	}
 	
   // Train AIDA
   for(string score_t: score_type){
   	for(string alpha_v: version){  
 			gettimeofday(&start,NULL);
 			double alpha_min, alpha_max;
-			if(alpha_v=="alpha1_"){
+			if(alpha_v=="alpha1"){
 				alpha_min = 1.;
 				alpha_max = 1.;
 			}
@@ -107,7 +100,7 @@ int main(int argc, char** argv){
 			
 			cout<<"AIDA training time: "<<delta/niter<<endl;
 			
-			ofstream fres("../results/"+tname+"_AIDA_dist"+lnorm+"_"+score_t+"_"+alpha_v+file_number+".dat");			
+			ofstream fres("../results/"+tname+"_AIDA_dist"+lnorm+"_"+score_t+"_"+alpha_v+file_num+".dat");			
 			fres<<n<<" "<<endl;
 			for(int i=0;i<n;i++){
 				fres<<scoresAIDA[i]<<endl;

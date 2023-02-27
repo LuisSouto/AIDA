@@ -62,18 +62,12 @@ int main(int argc, char** argv){
 		Xnom[i] = 0;
 	}	
 	
-	omp_set_num_threads(4);
+	omp_set_num_threads(1);
 	string lnorm      = "1";           // distance norm
 	string score_type = "variance";
 	string dist_type  = "manhattan";	
+  string file_num   = (argc>1)?string("_")+argv[1]:"";	
 	
-	string file_number;
-	if(argc>1){
-		file_number = argv[1];
-	}
-	else{
-	  file_number = "1";
-	}
 	
   // Train AIDA
 	gettimeofday(&start, NULL);
@@ -92,7 +86,7 @@ int main(int argc, char** argv){
 	ref_factor_str<<setprecision(3)<<ref_factor;
   double *score_dim  = new double[nFnum];
   
-	ofstream fex("../results/"+tname+"_TIX"+ref_factor_str.str()+"_"+file_number+".dat");
+	ofstream fex("../results/"+tname+"_TIX"+ref_factor_str.str()+file_num+".dat");
   fex<<n_outliers<<" "<<endl;
   for(int i=0;i<n_outliers;i++){
   	gettimeofday(&start, NULL);
