@@ -18,7 +18,7 @@ ffolder   = '../synthetic_data/'
 fname     = 'example_cross_1000_50'
 foutliers  = ffolder+fname+'_outliers.dat'
 fdata      = ffolder+fname+'_num.dat'
-ref_factor = '1.5_'
+ref_factor = '2_'
 fexplain   = '../results/'+fname+'_TIX'+ref_factor
 finfo      = ffolder+fname+'_outlier_info.dat'
 
@@ -67,7 +67,7 @@ plt.show()
 print('Current outlier id: ',outls[id])
 print('10 most relevant dimensions: '+str(imp_dim[:ndim]))
 
-## Find size of minimal subspace
+## Find size of minimal subspace (only possible if the features defining the outlier are known)
 
 ns = 1
 

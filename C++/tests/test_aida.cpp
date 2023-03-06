@@ -16,6 +16,7 @@
 #include "isolation_formulas.h"
 #include "aida_class.h"
 #include "distance_metrics.h"
+#include "io_module.h"
 
 using namespace std;
 
@@ -23,53 +24,26 @@ int main(int argc, char** argv){
 	struct timeval start, end;   // Time profiling 
 	string tname = "example_cross_1000_50";
 	string fname = "../synthetic_data/"+tname;
-	ifstream fdata_num(fname+"_num.dat");
+	string fnum  = fname+"_num.dat";           // filename with numerical features
 	
-	double Xnum_temp;
-	int    Xnom_temp;
-	int n, N = 100, niter = 1, nFnum, nFnom = 1;
+	int n, N = 100, nFnum, nFnom = 1;
+	double *Xnum = NULL; // Undefined behaviour if not NULL!
 	
-	/* Load data */
-	fdata_num>>n;
-	fdata_num.ignore();
-	fdata_num>>nFnum;
-	
-	double *Xnum = new double[n*nFnum], *scoresAIDA = new double[n];
-	
-	for(int i=0;i<n;i++){
-		for(int j=0;j<nFnum-1;j++){
-			fdata_num>>Xnum_temp;
-			Xnum[j+i*nFnum] = Xnum_temp;
-			fdata_num.ignore();
-		}
-		fdata_num>>Xnum_temp;
-		Xnum[nFnum-1+i*nFnum] = Xnum_temp;
-	}
-
-
-/* Uncomment these lines to use nominal features. Otherwise just create an array of zeros. */
-//	ifstream fdata_nom(fname+"_nom.dat");
-//	fdata_nom>>n;
-//	fdata_nom.ignore();
-//	fdata_nom>>nFnom;
+	read_data(Xnum,n,nFnum,fnum);
+	double *scoresAIDA = new double[n];
 	
 	int *Xnom = new int[n*nFnom];
-	
 	for(int i=0;i<n*nFnom;i++){
 		Xnom[i] = 0;
 	}
 	
-//	for(int i=0;i<n;i++){
-//		for(int j=0;j<nFnom-1;j++){
-//			fdata_nom>>Xnom_temp;
-//			Xnom[j+i*nFnom] = Xnom_temp;
-//			fdata_nom.ignore();
-//		}
-//		fdata_nom>>Xnom_temp;
-//		Xnom[nFnom-1+i*nFnom] = Xnom_temp;
-//	}
+	// Uncomment to use provided file with nominal features. In that case, also comment previous
+	// declaration of Xnom.
+//  int *Xnom = NULL;
+//  read_data(Xnom,n,nFnom,fname+"_nom.dat");
+
 	
-	omp_set_num_threads(1);
+	omp_set_num_threads(6);
 	string lnorm         = "1";                            // distance norm
 	string version[2]    = {"alpha1","alpharandom"};
 	string score_type[2] = {"expectation","variance"};
@@ -98,7 +72,7 @@ int main(int argc, char** argv){
 			
 			float delta = ((end.tv_sec-start.tv_sec)*1e6+end.tv_usec-start.tv_usec)/1.e6;
 			
-			cout<<"AIDA training time: "<<delta/niter<<endl;
+			cout<<"AIDA training time: "<<delta<<endl;
 			
 			ofstream fres("../results/"+tname+"_AIDA_dist"+lnorm+"_"+score_t+"_"+alpha_v+file_num+".dat");			
 			fres<<n<<" "<<endl;
@@ -108,9 +82,4 @@ int main(int argc, char** argv){
 			fres.close();			
 		}
 	}
-	
-	
-	
-	fdata_num.close();
-//	fdata_nom.close();
 }

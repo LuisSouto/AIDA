@@ -12,8 +12,11 @@ OBJECTFILES = $(patsubst $(SRC)%.cpp,$(OBJ)%.o,$(SOURCEFILES))
 
 all: $(OBJECTFILES)
 
-$(OBJ)%.o: $(SRC)%.cpp
+$(OBJ)%.o: $(SRC)%.cpp | $(OBJ)
 	$(CC) $(INC) -c $< -o $@
     
+$(OBJ):
+	mkdir -p $@
+
 clean:
-	rm $(OBJECTFILES)
+	rm $(OBJECTFILES)	

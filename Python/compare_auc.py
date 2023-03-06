@@ -11,7 +11,7 @@ Created on 4/10/22 12:57
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, average_precision_score
+from sklearn.metrics import roc_curve, roc_auc_score
 
 ## Load the data
 
