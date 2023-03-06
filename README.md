@@ -7,7 +7,7 @@ Python code is also provided to analyze the results produced by AIDA and TIX. Th
 
 The format of the input data is the same as the examples provided in the synthetic_data folder.
 
-In order to compile and run the code on Ubuntu (syntax may change for other Linux distributions) go to the C++ in a terminal and do:
+In order to compile and run the code on Ubuntu (syntax may change for other Linux distributions) go to the C++ folder in a terminal and do:
 ```
   makefile
   sh build_AIDA.sh tests/example_aida.cpp
