@@ -10,7 +10,7 @@ The format of the input data is the same as the examples provided in the synthet
 In order to compile and run the code on Ubuntu (syntax may change for other Linux distributions) go to the C++ folder in a terminal and write:
 ```
   make
-  sh build_AIDA.sh tests/example_aida.cpp
+  sh build_AIDA.sh tests/example_aida.cpp bin/example_aida.out
   ./bin/example_aida.out
 ```
 
